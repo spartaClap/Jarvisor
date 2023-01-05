@@ -25,13 +25,47 @@
     <title>모두의 회의 비서 Jarvisor</title>
   </head>
   <body>
-    <div id="head">
-      <button id="btnLogo">logo</button>
-      <button id="btnMenu">menu</button>
-    </div>
+    <header>
+      <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Jarvisor</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDarkNavbar"
+            aria-controls="offcanvasDarkNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!--메뉴버튼-->
+          <div
+            class="offcanvas offcanvas-end text-bg-dark"
+            tabindex="-1"
+            id="offcanvasDarkNavbar"
+            aria-labelledby="offcanvasDarkNavbarLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                Jarvisor
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+              <a onclick="">about</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
     <div id="loginBox">
       <p>ID : <input type="text"></p>
-      <p>PW : <input type="text"></p>
+      <p>PW : <input type="password"></p>
       <button id="btnLogin">login</button>
     </div>
     <div id="loginBox2">
