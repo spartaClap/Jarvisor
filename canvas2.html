@@ -141,9 +141,11 @@
             const summary = document.getElementById('summary').value;
             const comment = document.getElementById('comment').value;
             let temp_html = `
-                <input type="text" value="${name}" readonly>
-                <input type="text" value="${summary}" readonly>
-                <input type="text" value="${comment}" readonly>
+                <div>
+                  <input type="text" value="${name}" readonly>
+                  <input type="text" value="${summary}" readonly>
+                  <input type="text" value="${comment}" readonly>
+                </div>
               `
             $('#contents').append(temp_html)
           }
