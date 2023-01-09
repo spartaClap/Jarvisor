@@ -37,8 +37,6 @@
    
    
     .plan_head{
-        background-color: green;
-
         
         height: 1000px;
         width: 100%;
@@ -80,30 +78,66 @@
         width: 400px;
         height: 400px;
         border-radius: 200px;
-
+        border: 2px solid white;
         
         position: relative; 
+        
+        display: table;
+        margin-left:auto;
+        margin-right: auto;
+        margin-top: 70px;
        
     }
 
     .circle_text{
         position :absolute; 
-        margin-left: 100px;
-        margin-top: 100px;
+        margin-left: 93px;
+        margin-top: 115px;
         margin-bottom: 100px;
     }
   
 
     body {background:#333;} /* 웹문서 자체 배경색 지정 */
-.hoverbox {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:922px;height:504px;background:url('./img/background.png') center center / 100% no-repeat;}
-.hoverbox .screen {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;}
-.hoverbox .screen [class*='hud'] {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:all 1s;}
-.hoverbox .screen [class*='hud'] img {max-width:100%;}
-.hoverbox .screen:hover [class*='hud'] {opacity:1;}
-.hoverbox .screen .hud01 {animation:rolling01 5s linear infinite;width:80%;}
-.hoverbox .screen .hud02 {animation:rolling02 10s infinite alternate;}
+    .hoverbox {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-45%);
+      width:922px;
+      height:504px;
+      background:url('./img/background.png') center center / 100% no-repeat;}
 
-.hoverbox .screen .hud06 {top:22%;}
+    .hoverbox .screen {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      width:700px;
+      height:700px;}
+
+    .hoverbox .screen [class*='hud'] {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      opacity:0;
+      transition:all 1s;}
+
+    .hoverbox .screen [class*='hud'] img {
+      max-width:100%;}
+
+    .hoverbox .screen:hover [class*='hud'] {
+      opacity:1;}
+
+    .hoverbox .screen .hud01 {
+      animation:rolling01 5s linear infinite;
+      width:80%;}
+
+    .hoverbox .screen .hud02 {
+      animation:rolling02 10s infinite alternate;}
+
+    .hoverbox .screen .hud06 {
+        top:22%;}
 
 /* rotate 속성으로 1바퀴 돌아가는 키프레임 */
 @keyframes rolling01 {
@@ -133,25 +167,97 @@
   </script>
 
   <body>
-    <div class="plan_head">
-        
-        <div class="circle">
-            <div class="circle_text">
-            <h1>프로젝트 이름</h1>
-            <button> PROJECT GO </button>
-            </div>
-        </div>>
+    
+    
 
-    </div>
-
-    <div class="hoverbox">
-        <div class="screen">
-            <div class="hud01"><img src="./img/hover01.png"></div>
-            <div class="hud02"><img src="./img/hover02.png"></div>
-     
-            <div class="hud06"><img src="./img/background-deco01.png"></div>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
-    </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+
+            <div class="onetake">
+                <div class="plan_head">
+        
+                    <div class="circle">
+                        <div class="circle_text">
+                            <h1>canvas1에서 변수로 프로젝트 이름받기</h1>
+                            <button type="button" onclick = "location.href = '#' "> PROJECT GO </button>
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div class="hoverbox">
+                    <div class="screen">
+                        <div class="hud01"><img src="./img/hover01.png"></div>
+                        <div class="hud02"><img src="./img/hover02.png"></div>
+        
+                        <div class="hud06"><img src="./img/background-deco01.png"></div>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        <div class="carousel-item">
+            <div class="onetake">
+                <div class="plan_head">
+        
+                    <div class="circle">
+                        <div class="circle_text">
+                            <h1>canvas1에서 변수로 프로젝트 이름받기</h1>
+                            <button type="button" onclick = "location.href = '#' "> PROJECT GO </button>
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div class="hoverbox">
+                    <div class="screen">
+                        <div class="hud01"><img src="./img/hover01.png"></div>
+                        <div class="hud02"><img src="./img/hover02.png"></div>
+        
+                        <div class="hud06"><img src="./img/background-deco01.png"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          <div class="carousel-item">
+            <div class="onetake">
+                <div class="plan_head">
+        
+                    <div class="circle">
+                        <div class="circle_text">
+                            <h1>canvas1에서 변수로 프로젝트 이름받기</h1>
+                            <button type="button" onclick = "location.href = '#' "> PROJECT GO </button>
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div class="hoverbox">
+                    <div class="screen">
+                        <div class="hud01"><img src="./img/hover01.png"></div>
+                        <div class="hud02"><img src="./img/hover02.png"></div>
+        
+                        <div class="hud06"><img src="./img/background-deco01.png"></div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     
 
   </body>
