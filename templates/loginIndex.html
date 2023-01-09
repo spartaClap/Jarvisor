@@ -23,6 +23,55 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title>모두의 회의 비서 Jarvisor</title>
+
+
+    <script>
+
+      $(document).ready(function(){
+          $('.main i').on('click',function(){
+              $('input').toggleClass('active');
+              if($('input').hasClass('active')){
+                  $(this).attr('class',"fa fa-eye-slash fa-lg")
+                  .prev('input').attr('type',"text");
+              }else{
+                  $(this).attr('class',"fa fa-eye fa-lg")
+                  .prev('input').attr('type','password');
+              }
+          });
+      });
+
+      function Login() {
+          $.ajax({
+              type: "POST",
+              url: "/login",
+              data: {id_give: $('#id').val(), pw_give: $('#pw').val()},
+
+              success: function (response) {
+                  if (response['result'] == 'success') {
+                      // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
+                      // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
+                      
+                      $.cookie('mytoken', response['token']);
+
+                      alert('로그인 완료!')
+                      window.location.href = '/differ'
+                  } else {
+                      // 로그인이 안되면 에러메시지를 띄웁니다.
+                      alert(response['msg'])
+                  }
+              }
+          })
+      }
+
+      function Register() {
+        window.location.href = '/register'
+      }
+
+
+    </script>
+
+
+
   </head>
   <body>
     <header>
@@ -64,12 +113,13 @@
       </nav>
     </header>
     <div id="loginBox">
-      <p>ID : <input type="text"></p>
-      <p>PW : <input type="password"></p>
-      <button id="btnLogin">login</button>
+      <br><br><br>
+      <p>ID : <input type="text" id="id"></p>
+      <p>PW : <input type="password" id="pw"></p>
+      <button id="btnLogin" onclick="Login()">login</button>
     </div>
     <div id="loginBox2">
-      <button id="btnNewUser">회원가입</button>
+      <button id="btnNewUser" onclick="Register()">회원가입</button>
       <button id="btnNewUser">아이디/비밀번호 찾기</button>
 
     </div>
