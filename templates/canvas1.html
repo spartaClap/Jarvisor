@@ -96,6 +96,7 @@
       <div class="modal hidden">
         <div class="bg"></div>
         <div class="modalBox">
+          <input type="text" id="newNum">
           <input type="text" id="newName">
           <input type="text" id="newIntro">
           <button class="closeBtn">닫기</button>
@@ -122,6 +123,27 @@
             let projectIntro = $('#newIntro').val();
             $('#projectIntro').attr("value", projectIntro);
           }
+
+
+
+
+        function save_plan(){
+          let no = $('#newNum').val()
+          let name = $('#newName').val()
+          let intro = $('#newIntro').val()
+
+          $.ajax({
+              type: 'POST',
+              url: '/project',
+              data: {no_give: no, name_give: name, intro_give: intro},
+              success: function (response) {
+                  alert(response['msg'])
+                  window.location.reload()
+              }
+          })
+        }  
+
+
       </script>
       <style>
         .modal {

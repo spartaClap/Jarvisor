@@ -12,7 +12,7 @@ import jwt
 
 ca = certifi.where()
 
-
+client = MongoClient('mongodb+srv://test:sparta@cluster0.l4us7n9.mongodb.net/cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
 
 
@@ -44,56 +44,232 @@ def login():
    return render_template('loginIndex.html')
 
 
-@app.route('/differ')
-def differ():
-   return render_template('differ.html')
+@app.route('/logout')
+def logout():
+    global unique
+    unique = ''
+    return render_template('loginIndex.html')
 
-############################################
+
+@app.route('/main')
+def main():
+   return render_template('main.html')
+
+################# <<<MY PAGE>>> #####################
+@app.route('/mypage')
+def mypage():
+    user_info = db.user.find_one({"id":unique}, {'_id': False})
+    
+    print(user_info)
+    user_name = user_info['name']
+    user_id = user_info['id']
+    return render_template('mypage.html', name=user_name, id=user_id)
+
+
+# 회원정보 수정
+@app.route("/mypage", methods=["PUT"])
+def user_put():
+    new_name_receive = request.form['new_name_give']
+    old_pw_receive = request.form['old_pw_give']
+    new_pw_receive = request.form['new_pw_give']
+    new_pw2_receive = request.form['new_pw2_give']
+
+    user_info = db.user.find_one({'id': unique}, {'_id': False})
+    old_pw_hash = hashlib.sha256(old_pw_receive.encode('utf-8')).hexdigest()
+
+    # case1) 이름만 변경하는 경우
+    if (new_pw_receive == "") and (new_pw2_receive == "") and (new_name_receive != ""):
+        if user_info['pw'] != old_pw_hash:
+            return jsonify({'msg': '기존 비밀번호를 다시 확인해주세요.'})
+        else:
+            db.user.update_one({'id':unique}, {"$set":{'name':new_name_receive}})
+            return jsonify({'msg': '회원정보를 수정했습니다.'})
+
+    # case2) 비밀번호만 변경하는 경우
+    elif (new_name_receive == "") and (new_pw_receive != ""):
+        if user_info['pw'] != old_pw_hash:
+            return jsonify({'msg': '기존 비밀번호를 다시 확인해주세요.'})
+        elif new_pw_receive != new_pw2_receive:
+            return jsonify({'msg': '새로운 비밀번호가 서로 일치하지 않습니다.'})
+        else:
+            new_pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
+            db.user.update_one({'id':unique},{"$set":{"pw":new_pw_hash}})
+            return jsonify({'msg': '회원정보를 수정했습니다.'})
+    
+    # case3) 이름과 비밀번호 둘 다 입력하지 않은 경우
+    elif (new_name_receive == "") and (new_pw_receive == ""):
+        return jsonify({'msg': '수정할 회원 정보를 입력해주세요.'})
+
+    # case4) 이름과 비밀번호 모두 변경하는 경우
+    else:
+        if user_info['pw'] != old_pw_hash:
+            return jsonify({'msg': '기존 비밀번호를 다시 확인해주세요.'})
+        elif new_pw_receive != new_pw2_receive:
+            return jsonify({'msg': '새로운 비밀번호가 서로 일치하지 않습니다.'})
+        else:
+            new_pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
+            doc = {
+                'name' : new_name_receive,
+                'pw' : new_pw_hash
+            }
+            db.user.update_one({'id':unique},{"$set":doc})
+            print(doc)
+            return jsonify({'msg': '회원정보를 수정했습니다.'})
+
+
+
+# 회원정보 삭제
+@app.route("/mypage", methods=["DELETE"])
+def user_delete():
+
+    db.user.delete_one({'id':unique})
+    return jsonify({'msg': '탈퇴 처리되었습니다. 또 방문해주세요.'})
+
+
+
+
+################# <<<canvas1 : Project>>> #####################
 
 @app.route('/canvas1')
 def canvas1():
    return render_template('canvas1.html')
 
+# 프로젝트 등록
+@app.route("/project", methods=["POST"])
+def project_post():
+    project_list = list(db.project.find({"unique":unique}, {'_id': False}))
+
+    if project_list == []:
+        no = 1
+    else:
+        no = project_list[-1]['no']+1
+
+    print(no)
+    name_receive = request.form['name_give']
+    intro_receive = request.form['intro_give']
+
+    doc = {
+        'no' : no,
+        'name' : name_receive,
+        'intro' : intro_receive,
+        'unique' : unique
+    }
+    db.project.insert_one(doc)
+
+    return jsonify({'msg': '등록 완료!'})
+
+
+# 프로젝트 수정
+@app.route("/project", methods=["PUT"])
+def project_put():
+    no_receive = request.form['no_give']
+    print(no_receive)
+    name_receive = request.form['name_give']
+    intro_receive = request.form['intro_give']
+
+    doc = {
+        'name' : name_receive,
+        'intro' : intro_receive
+    }
+    db.project.update_one({'no':int(no_receive), 'unique':unique},{"$set":doc})
+    print(doc)
+    return jsonify({'msg': '수정 완료!'})
+
+
+# 프로젝트 불러오기
+@app.route("/project", methods=["GET"])
+def project_get():
+    project_list = list(db.project.find({"unique":unique}, {'_id': False}))
+    print(project_list)
+     
+    return jsonify({'project':project_list})
+
+# 프로젝트 삭제
+@app.route("/project", methods=["DELETE"])
+def project_delete():
+    no_receive = request.form['no_give']
+    print(no_receive)
+
+    db.project.delete_one({'no':int(no_receive), 'unique':unique})
+    return jsonify({'msg': '삭제 완료!'})
+
+
+
+
+################# <<<canvas2 : Topic>>> #####################
 
 @app.route('/canvas2')
 def canvas2():
    return render_template('canvas2.html')
 
+# 토픽 등록
+@app.route("/topic", methods=["POST"])
+def topic_post():
+    topic_list = list(db.topic.find({"unique":unique}, {'_id': False}))
+
+    if topic_list == []:
+        no = 1
+    else:
+        no = topic_list[-1]['no']+1
+
+    print(no)
+    name_receive = request.form['name_give']
+    intro_receive = request.form['intro_give']
+
+    doc = {
+        'no' : no,
+        'name' : name_receive,
+        'intro' : intro_receive,
+        'unique' : unique
+    }
+    db.topic.insert_one(doc)
+
+    return jsonify({'msg': '등록 완료!'})
+
+
+# 토픽 수정
+@app.route("/topic", methods=["PUT"])
+def topic_put():
+    no_receive = request.form['no_give']
+    print(no_receive)
+    name_receive = request.form['name_give']
+    intro_receive = request.form['intro_give']
+
+    doc = {
+        'name' : name_receive,
+        'intro' : intro_receive
+    }
+    db.topic.update_one({'no':int(no_receive), 'unique':unique},{"$set":doc})
+    print(doc)
+    return jsonify({'msg': '수정 완료!'})
+
+
+# 토픽 불러오기
+@app.route("/topic", methods=["GET"])
+def topic_get():
+    topic_list = list(db.topic.find({"unique":unique}, {'_id': False}))
+    print(topic_list)
+     
+    return jsonify({'topics':topic_list})
+
+# 토픽 삭제
+@app.route("/topic", methods=["DELETE"])
+def topic_delete():
+    no_receive = request.form['no_give']
+    print(no_receive)
+
+    db.topic.delete_one({'no':int(no_receive), 'unique':unique})
+    return jsonify({'msg': '삭제 완료!'})
+
+
+################# <<<canvas3 : Todo>>> #####################
 
 @app.route('/canvas3')
 def canvas4():
    return render_template('canvas3.html')
 
 
-
-
-@app.route("/bstorming", methods=["POST"])
-def bstorming_post():
-    storming_list = list(db.bstorming.find({"unique":unique}, {'_id': False}))
-
-    no = len(storming_list)+1
-    print(no)
-    name_receive = request.form['name_give']
-    summary_receive = request.form['summary_give']
-    comment_receive = request.form['comment_give']
-    doc = {
-        'no' : no,
-        'name' : name_receive,
-        'summary' : summary_receive,
-        'comment' : comment_receive,
-        'unique' : unique
-    }
-    db.bstorming.insert_one(doc)
-
-    return jsonify({'msg': '등록 완료!'})
-
-@app.route("/bstorming", methods=["GET"])
-def bstorming_get():
-    contents_list = list(db.bstorming.find({"unique":unique}, {'_id': False}))
-    return jsonify({'contents':contents_list})
-
-
-
+# TODO 등록
 @app.route("/planner", methods=["POST"])
 def plan_post():
     plan_list = list(db.planner.find({"unique":unique}, {'_id': False}))
@@ -124,7 +300,7 @@ def plan_post():
     print(doc)
     return jsonify({'msg': '등록 완료!'})
 
-
+# TODO 수정
 @app.route("/planner", methods=["PUT"])
 def plan_put():
     no_receive = request.form['no_give']
@@ -148,7 +324,7 @@ def plan_put():
     return jsonify({'msg': '수정 완료!'})
 
 
-
+# TODO 불러오기
 @app.route("/planner", methods=["GET"])
 def plan_get():
     plans_list = list(db.planner.find({"unique":unique}, {'_id': False}))
@@ -166,7 +342,7 @@ def plan_get():
             d_days.append('null')                
     return jsonify({'plans':plans_list, 'd_days':d_days})
 
-
+# TODO 삭제
 @app.route("/planner", methods=["DELETE"])
 def plan_delete():
     no_receive = request.form['no_give']
@@ -174,30 +350,6 @@ def plan_delete():
 
     db.planner.delete_one({'no':int(no_receive), 'unique':unique})
     return jsonify({'msg': '삭제 완료!'})
-
-@app.route("/idea", methods=["POST"])
-def idea_post():
-    name_receive = request.form['name_give']
-    comment_receive = request.form['comment_give']
-    doc = {
-        'name' : name_receive,
-        'comment' : comment_receive,
-        'unique' : unique
-    }
-    db.idea.insert_one(doc)
-
-    return jsonify({'msg': '등록 완료!'})
-
-
-
-
-@app.route("/idea", methods=["GET"])
-def idea_get():
-
-    idea_list = list(db.idea.find({"unique":unique}, {'_id': False}))
-    return jsonify({'ideas':idea_list})
-
-
 
 
 
@@ -300,4 +452,3 @@ def api_login():
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
-
