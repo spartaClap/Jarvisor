@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- html 기본 -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 부트스트랩 연결 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- ajax 연결 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- css 파일 연결-->
+    <link rel="stylesheet" href="todo.css" />
+    <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="menubar.css" />
+
+    <title>모두의 회의 비서 Jarvisor</title>
+
+    <script>
+      let canvas4_id = 1;
+      //1. 기록하기 버튼을 눌렀을 때 보여지는 박스와, 닫기버튼을 눌렀을 때 없어지는 함수
+      function open_box() {
+        $("#plan_postbox").show();
+      }
+
+      function close_box() {
+        $("#plan_postbox").hide();
+      }
+
+      //2. 저장하기 버튼을 눌렀을 때 input창에 입력한 내용을 카드로 생성해주는 함수
+      function make_plan() {
+        let txt1 = $("#plan_name").val();
+        let txt2 = $("#start_day").val();
+        let txt3 = $("#finish_day").val();
+        let txt4 = $("#plan_comment").val();
+
+        let temp_html = `<div id=${canvas4_id} class="card h-100 hihi" >
+                    <div class="card-body">
+                        <h5 id="add_plan_name${canvas4_id}" class="card-title">${txt1}</h5>
+                        <p id="add_start_day${canvas4_id}" class="card-text">${txt2}</p>
+                        <p id="add_finish_day${canvas4_id}" class="card-text">${txt3}</p>
+                        <p id="add_plan_comment${canvas4_id}" class="card-text">${txt4}</p>
+                        <button type="button" onclick="change_plan(${canvas4_id})" class="btn btn-info">수정</button>
+                        <button type="button" onclick="delete_plan(${canvas4_id})" class="btn btn-danger">삭제</button>
+                    </div>
+                </div> `;
+        $("#plan_cards").append(temp_html);
+        canvas4_id++;
+      }
+
+      // 3. 삭제하기 버튼을 눌렀을 떄 해당 일정을 삭제하는 함수
+      function delete_plan(id) {
+        $(`#${id}`).remove();
+      }
+
+      // 4. 수정하기 버튼을 눌렀을 때 새로운 내용을 입력하는 input창과 저장하기 버튼을 불러오는 함수
+      function change_plan(id) {
+        let change1 = ` <div id="change_card" class="col">
+            <div class="card">
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="new_plan_name${canvas4_id}" placeholder="name@example.com">
+                <label for="floatingInput">할 일을 입력하세요</label>
+              </div>
+              <div class="form-floating">
+                <input type="date" class="form-control" id="new_start_day${canvas4_id}" placeholder="Password">
+                <label for="floatingPassword">시작날짜</label>
+              </div>
+              <div class="form-floating">
+                <input type="date" class="form-control" id="new_finish_day${canvas4_id}" placeholder="Password">
+                <label for="floatingPassword">종료날짜</label>
+              </div>
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="new_plan_comment${canvas4_id}"></textarea>
+                <label for="floatingTextarea">Comments</label>
+              </div>
+              
+              <button onclick="save_plan(${canvas4_id})" type="button" class="btn btn-success">저장하기</button>
+              
+            </div>
+          </div>`;
+        $(`#${id}`).html(change1);
+      }
+
+      // 5. 새로운 내용을 입력하고 저장하기 버튼을 눌렀을 때 기존의 내용에서 새로운 내용으로 바꿔주는 함수
+      function save_plan(id) {
+        let value_1 = $(`#new_plan_name${canvas4_id}`).val();
+        $(`#add_plan_name${canvas4_id}`).text(value_1);
+        let value_2 = $(`#new_start_day${canvas4_id}`).val();
+        $(`#add_start_day${canvas4_id}`).text(value_2);
+        let value_3 = $(`#new_finish_day${canvas4_id}`).val();
+        $(`#add_finish_day${canvas4_id}`).text(value_3);
+        let value_4 = $(`#new_plan_comment${canvas4_id}`).val();
+        $(`#add_plan_comment${canvas4_id}`).text(value_4);
+        // window.location.reload()
+      }
+
+      // 6. GET을 이용해서 화면이 리로드 되었을 때 기존에 DB에 저장된 값들을 불러올 수 있는 함수
+    </script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <nav class="navbar navbar-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" onclick="location.href='main.html'">Jarvisor</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasDarkNavbar"
+              aria-controls="offcanvasDarkNavbar"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+              class="offcanvas offcanvas-end text-bg-dark"
+              tabindex="-1"
+              id="offcanvasDarkNavbar"
+              aria-labelledby="offcanvasDarkNavbarLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                  Jarvisor
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#"
+                      >마이페이지</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">로그아웃</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!--캔버스이동메뉴-->
+      <div class="top">
+        <div class="menubar">
+          <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                onclick="location.href='project.html'"
+                >프로젝트</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+              onclick="location.href='topic.html'"
+                >회의록</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active"
+              style="background: aquamarine; color: black"
+              onclick="location.href='todo.html'"
+                >투두리스트</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="contents">
+        <div class="box">
+          <div class="plan_head">
+            <h1>프로젝트 일정</h1>
+            <button onclick="open_box()">일정 기록하기</button>
+          </div>
+
+          <div class="plan_post" id="plan_postbox">
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="plan_name"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">할 일을 입력하세요</label>
+            </div>
+            <div class="form-floating">
+              <input
+                type="date"
+                class="form-control"
+                id="start_day"
+                placeholder="Password"
+              />
+              <label for="floatingPassword">시작날짜를 입력하세요</label>
+            </div>
+            <div class="form-floating">
+              <input
+                type="date"
+                class="form-control"
+                id="finish_day"
+                placeholder="Password"
+              />
+              <label for="floatingPassword">종료날짜를 입력하세요</label>
+            </div>
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                placeholder="Leave a comment here"
+                id="plan_comment"
+              ></textarea>
+              <label for="floatingTextarea"
+                >할 일에 대한 설명을 입력하세요</label
+              >
+            </div>
+            <div class="plan_upload">
+              <button
+                type="button"
+                onclick="make_plan()"
+                class="btn btn-primary"
+              >
+                저장하기
+              </button>
+              <button
+                type="button"
+                onclick="close_box()"
+                class="btn btn-outline-primary"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+
+          <div class="wrap_card">
+            <div id="plan_cards" class="row row-cols-1 row-cols-md-4 g-4"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

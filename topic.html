@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- html 기본 -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 부트스트랩 연결 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- ajax 연결 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- css 파일 연결-->
+    <link rel="stylesheet" href="topic.css" />
+    <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="menubar.css" />
+
+
+    <title>모두의 회의 비서 Jarvisor</title>
+  </head>
+  <body>
+    <header>
+      <div>
+        <nav class="navbar navbar-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" onclick="location.href='main.html'">Jarvisor</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasDarkNavbar"
+              aria-controls="offcanvasDarkNavbar"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+              class="offcanvas offcanvas-end text-bg-dark"
+              tabindex="-1"
+              id="offcanvasDarkNavbar"
+              aria-labelledby="offcanvasDarkNavbarLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                  Jarvisor
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#"
+                      >마이페이지</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">로그아웃</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <!--캔버스이동메뉴-->
+      <div class="top">
+        <div class="menubar">
+          <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                onclick="location.href='project.html'"
+                >프로젝트</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active"
+              style="background: aquamarine; color: black"
+              onclick="location.href='topic.html'"
+                >회의록</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="location.href='todo.html'"
+                >투두리스트</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="contents">
+        <div class="box">
+          <!--페이지이동버튼-->
+          <div>
+            <nav aria-label="...">
+              <ul class="pagination pagination-sm">
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">1</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+              </ul>
+            </nav>
+          </div>
+          <!--토픽-->
+          <div>
+            <style>
+              #topic_change {
+                display: none;
+              }
+            </style>
+
+            <script>
+              function open_box() {
+                $("#topic_change").show();
+              }
+              function close_box() {
+                $("#topic_change").hide();
+              }
+              function input_topic() {
+                const newTopic = document.getElementById("newTopic").value;
+                document.getElementById("topic").innerText = newTopic;
+              }
+            </script>
+
+            <button id="topic" onclick="open_box()">토픽을 입력하세요</button>
+            <div id="topic_change">
+              <input id="newTopic" type="text" />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="close_box()"
+              >
+                닫기
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="input_topic(), close_box()"
+              >
+                저장
+              </button>
+            </div>
+          </div>
+          <!--컨텐츠 (회의내용)-->
+          <div>
+            <style>
+              #add_contents {
+                display: none;
+              }
+            </style>
+
+            <script>
+              topic_id = 1;
+              function open_contents() {
+                $("#add_contents").show();
+              }
+              function close_contents() {
+                $("#add_contents").hide();
+              }
+              function add_contents() {
+                const name = document.getElementById("name").value;
+                const summary = document.getElementById("summary").value;
+                const comment = document.getElementById("comment").value;
+                let temp_html = `
+                <div id="${topic_id}">
+                  <input type="text" value="${name}" readonly>
+                  <input type="text" value="${summary}" readonly>
+                  <input type="text" value="${comment}" readonly>
+                  
+                  <button type="button" onclick="delete_comment(${topic_id})" class="btn btn-outline-danger">삭제</button>
+                </div>
+              `;
+                $("#contents").append(temp_html);
+                topic_id++;
+              }
+
+              function delete_comment(id) {
+                $(`#${id}`).remove();
+              }
+
+              function change_comment() {
+                $("#mymodal").modal("show");
+              }
+            </script>
+
+            <div id="contents">
+              <input type="text" value="이름" readonly />
+              <input type="text" value="내용" readonly />
+              <input type="text" value="코멘트" readonly />
+            </div>
+            <button id="btn_add" onclick="open_contents()">추가</button>
+            <div id="add_contents">
+              <div>
+                <input id="name" type="text" />
+                <input id="summary" type="text" />
+                <input id="comment" type="text" />
+              </div>
+              <button type="button" onclick="add_contents(), close_contents()">
+                저장
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
