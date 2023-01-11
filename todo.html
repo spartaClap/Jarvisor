@@ -191,7 +191,7 @@
       <div class="contents">
         <div class="box">
           <div class="plan_head">
-            <h1>프로젝트 일정</h1>
+            <h2>프로젝트 일정</h2>
             <button onclick="open_box()">일정 기록하기</button>
           </div>
 
@@ -234,27 +234,21 @@
               >
             </div>
             <div class="plan_upload">
-              <button
-                type="button"
-                onclick="make_plan()"
-                class="btn btn-primary"
-              >
-                저장하기
-              </button>
-              <button
-                type="button"
-                onclick="close_box()"
-                class="btn btn-outline-primary"
-              >
-                닫기
-              </button>
+                <button class="btn btn-outline-secondary" type="button" onclick="make_plan()">
+                  저장하기
+                </button>
+                <button class="btn btn-outline-secondary" type="button" onclick="close_box()">
+                  닫기
+                </button>
             </div>
           </div>
-
+        </div>
+        <div class="box">
           <div class="wrap_card">
             <div id="plan_cards" class="row row-cols-1 row-cols-md-4 g-4"></div>
           </div>
         </div>
+
       </div>
     </main>
   </body>
