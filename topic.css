@@ -1,3 +1,7 @@
+* {
+    font-family: "Nanum Gothic", sans-serif;
+  }
+
 .plan_head {
   height: 150px;
   width: 100%;
@@ -17,7 +21,7 @@
 .plan_head > input {
   width: 60%;
   height: 40px;
-  font-size: xx-large;
+  font-size: x-large;
   background-color: transparent;
   color: white;
   border: none;

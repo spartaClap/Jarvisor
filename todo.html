@@ -27,6 +27,14 @@
     <link rel="stylesheet" href="menu.css" />
     <link rel="stylesheet" href="menubar.css" />
 
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <title>모두의 회의 비서 Jarvisor</title>
 
     <script>
@@ -145,12 +153,12 @@
               <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"
+                    <a class="nav-link active" aria-current="page" onclick="location.href='mypage.html'"
                       >마이페이지</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">로그아웃</a>
+                    <a class="nav-link" onclick="location.href='login.html'">로그아웃</a>
                   </li>
                 </ul>
               </div>
@@ -166,22 +174,20 @@
         <div class="menubar">
           <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-              <a
-                class="nav-link"
-                onclick="location.href='project.html'"
+              <a class="nav-link" onclick="location.href='project.html'"
                 >프로젝트</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link"
-              onclick="location.href='topic.html'"
+              <a class="nav-link" onclick="location.href='topic.html'"
                 >회의록</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active"
-              style="background: aquamarine; color: black"
-              onclick="location.href='todo.html'"
+              <a
+                class="nav-link active"
+                style="background: aquamarine; color: black"
+                onclick="location.href='todo.html'"
                 >투두리스트</a
               >
             </li>
@@ -234,12 +240,20 @@
               >
             </div>
             <div class="plan_upload">
-                <button class="btn btn-outline-secondary" type="button" onclick="make_plan()">
-                  저장하기
-                </button>
-                <button class="btn btn-outline-secondary" type="button" onclick="close_box()">
-                  닫기
-                </button>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="make_plan()"
+              >
+                저장하기
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                onclick="close_box()"
+              >
+                닫기
+              </button>
             </div>
           </div>
         </div>
@@ -248,7 +262,6 @@
             <div id="plan_cards" class="row row-cols-1 row-cols-md-4 g-4"></div>
           </div>
         </div>
-
       </div>
     </main>
   </body>
